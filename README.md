@@ -1,4 +1,4 @@
-# Todo Task Card
+# Daniel J Todo Task Card
 
 A clean, modern Todo / Task Card built with plain HTML, CSS, and JavaScript.
 
