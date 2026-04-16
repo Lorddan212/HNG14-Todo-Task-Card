@@ -1,48 +1,65 @@
 # Daniel J Todo Task Card
 
-A clean, modern Todo / Task Card built with plain HTML, CSS, and JavaScript.
+A single, interactive Todo / Task Card built with plain HTML, CSS, and JavaScript.
+
+## What Changed
+
+The previous design behaved more like a small task app with a task list and modal editor. This update keeps the experience focused on one Todo Card and moves the richer behavior directly into the card.
+
+New behavior includes:
+
+- In-card edit mode
+- Editable title, description, priority, and due date
+- Status dropdown control
+- Synchronized checkbox and status state
+- Priority indicator that changes color
+- Collapsible long description
+- Overdue indicator
+- More granular time remaining text
+- Focus trap while editing
 
 ## Features
 
-- Responsive todo card layout
-- Required `data-testid` hooks for automated checks
-- Priority badges:
-  - `High` in red
-  - `Medium` in blue
-  - `Low` in orange
-- Status badges:
-  - `Pending` in yellow
-  - `In Progress` in blue
-  - `Done` in green
-- Live time-remaining update
-- Real task actions:
-  - Add task
-  - Edit task
-  - Delete task
-- Modal task editor
-- Local task persistence with `localStorage`
+- Real checkbox for completion
+- Status values: `Pending`, `In Progress`, and `Done`
+- Priority values: `Low`, `Medium`, and `High`
+- Priority colors:
+  - `Low`: orange
+  - `Medium`: blue
+  - `High`: red
+- Status colors:
+  - `Pending`: yellow
+  - `In Progress`: blue
+  - `Done`: green
+- Time remaining examples:
+  - `Due in 2 days`
+  - `Due in 3 hours`
+  - `Due in 45 minutes`
+  - `Overdue by 1 hour`
+  - `Completed`
 
-## Project Files
+## Design Decisions
 
-- `index.html` - Main app UI, styling, and behavior
-- `READ.md` - Project overview and usage notes
-
-## How To Run
-
-1. Open `index.html` in your browser or with VS Code Live Server.
-2. Use the task card buttons to add, edit, or delete tasks.
-3. Select tasks from the task list to load them into the main card.
+- The component remains a single Todo Card instead of a full app.
+- Editing happens inside the card so users do not leave the task context.
+- The status dropdown appears before the expand and action buttons to support the requested keyboard flow.
+- Long descriptions collapse by default and can be expanded with an accessible button.
+- If the task is marked `Done`, the time remaining text becomes `Completed` and the countdown no longer updates.
 
 ## Accessibility Notes
 
-- Uses semantic elements like `article`, `section`, `time`, `button`, and a real checkbox input
-- Visible focus styles are included
-- Action buttons have accessible names
-- Time remaining uses `aria-live="polite"`
+- All edit fields use visible `<label for="">` labels.
+- The status dropdown has an accessible name.
+- The expand button uses `aria-expanded` and `aria-controls`.
+- The collapsible section has a matching `id`.
+- Time remaining uses `aria-live="polite"`.
+- Edit mode traps focus inside the form.
+- Closing edit mode returns focus to the Edit button.
+- Focus styles are visible for keyboard users.
 
 ## Testing Hooks
 
-The main task card includes the required test IDs:
+Previous test IDs are still present:
 
 - `test-todo-card`
 - `test-todo-title`
@@ -53,15 +70,32 @@ The main task card includes the required test IDs:
 - `test-todo-status`
 - `test-todo-complete-toggle`
 - `test-todo-tags`
+- `test-todo-tag-work`
+- `test-todo-tag-urgent`
 - `test-todo-edit-button`
 - `test-todo-delete-button`
 
-Optional tag hooks:
+New test IDs:
 
-- `test-todo-tag-work`
-- `test-todo-tag-urgent`
+- `test-todo-edit-form`
+- `test-todo-edit-title-input`
+- `test-todo-edit-description-input`
+- `test-todo-edit-priority-select`
+- `test-todo-edit-due-date-input`
+- `test-todo-save-button`
+- `test-todo-cancel-button`
+- `test-todo-status-control`
+- `test-todo-priority-indicator`
+- `test-todo-expand-toggle`
+- `test-todo-collapsible-section`
+- `test-todo-overdue-indicator`
 
-## Notes
+## How To Run
 
-- Tasks are saved in the browser with `localStorage`
-- Clearing browser storage will remove saved tasks
+Open `index.html` directly in a browser or use VS Code Live Server.
+
+## Known Limitations
+
+- The card stores state in memory only. Refreshing the page resets it to the default task.
+- Delete resets the card to a simple empty-task state rather than removing the card from the page.
+- There is no backend or task database because this is intentionally a single-card component.
