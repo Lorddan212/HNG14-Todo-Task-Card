@@ -1,101 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daniel J Todo Task Card</title>
     <style>
       :root {
-        --bg1: #f8efe3;
-        --bg2: #eef5f2;
-        --card: rgba(255, 251, 245, 0.97);
-        --panel: rgba(255, 255, 255, 0.84);
-        --text: #1f2937;
-        --muted: #5b6473;
-        --border: rgba(92, 109, 128, 0.16);
-        --shadow: 0 20px 45px rgba(69, 54, 37, 0.12);
+        --page-a: #f8efe3;
+        --page-b: #edf6f3;
+        --card: #fffbf5;
+        --ink: #1f2937;
+        --muted: #647084;
+        --line: rgba(79, 94, 113, 0.18);
         --focus: #0f766e;
-        --hi-bg: #fee2e2;
-        --hi-t: #b91c1c;
-        --md-bg: #dbeafe;
-        --md-t: #1d4ed8;
-        --lo-bg: #ffedd5;
-        --lo-t: #c2410c;
-        --pe-bg: #fef3c7;
-        --pe-t: #b45309;
-        --ip-bg: #dbeafe;
-        --ip-t: #1d4ed8;
-        --do-bg: #dcfce7;
-        --do-t: #15803d;
-        --tag-bg: #ecf5f2;
-        --tag-t: #14532d;
-        --btn: #fff;
-        --btn-t: #243041;
-        --btn-b: rgba(36, 48, 65, 0.12);
-        --btn-h: #f6efe6;
+        --shadow: 0 22px 55px rgba(69, 54, 37, 0.14);
+        --low-bg: #f3e8ff;
+        --low-text: #7e22ce;
+        --medium-bg: #dbeafe;
+        --medium-text: #1d4ed8;
+        --high-bg: #fee2e2;
+        --high-text: #b91c1c;
+        --pending-bg: #fef3c7;
+        --pending-text: #a16207;
+        --progress-bg: #dbeafe;
+        --progress-text: #1d4ed8;
+        --done-bg: #dcfce7;
+        --done-text: #15803d;
         --danger-bg: #fff1ef;
-        --danger-t: #b42318;
-        --red: #c2410c;
-        --red-soft: #fff0eb;
-        --overlay: rgba(17, 24, 39, 0.45);
+        --danger-text: #b42318;
+        --tag-bg: #ecf5f2;
+        --tag-text: #14532d;
       }
 
       * {
         box-sizing: border-box;
       }
 
-      html {
-        color-scheme: light;
-      }
-
       body {
         margin: 0;
         min-height: 100vh;
         font-family: "Aptos", "Segoe UI", "Trebuchet MS", sans-serif;
-        color: var(--text);
+        color: var(--ink);
         background:
-          radial-gradient(circle at top left, rgba(255, 214, 170, 0.9), transparent 34%),
-          radial-gradient(circle at bottom right, rgba(129, 201, 179, 0.55), transparent 28%),
-          linear-gradient(180deg, var(--bg1), var(--bg2));
+          radial-gradient(circle at 8% 0%, rgba(255, 213, 168, 0.92), transparent 33%),
+          radial-gradient(circle at 100% 100%, rgba(115, 196, 175, 0.56), transparent 34%),
+          linear-gradient(180deg, var(--page-a), var(--page-b));
       }
 
       .page-shell {
         min-height: 100vh;
-        padding: 24px 16px 40px;
+        place-items: center;
+        padding: 24px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
 
-      .stack {
-        width: min(100%, 520px);
-        margin: 0 auto;
-        display: grid;
-        gap: 18px;
-      }
-
-      .eyebrow {
-        margin: 0 0 12px;
-        font-size: 0.78rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: #7c5a3f;
-        font-weight: 700;
-      }
-
-      article[data-testid="test-todo-card"],
-      .task-list-panel,
-      .modal-card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 28px;
-        box-shadow: var(--shadow);
-        -webkit-backdrop-filter: blur(14px);
-        backdrop-filter: blur(14px);
+      .hidden {
+        display: none;
       }
 
       article[data-testid="test-todo-card"] {
+        --accent: var(--high-text);
+        width: min(100%, 520px);
         position: relative;
         overflow: hidden;
-        width: 100%;
         padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
       }
 
       article[data-testid="test-todo-card"]::before {
@@ -103,125 +79,199 @@
         position: absolute;
         inset: 0 auto auto 0;
         width: 100%;
-        height: 6px;
-        background: linear-gradient(90deg, #f97316, #f59e0b 40%, #14b8a6);
+        height: 7px;
+        background: var(--accent);
       }
 
-      .header-row,
-      .main-row,
-      .footer-row {
-        display: flex;
-        align-items: center;
-        gap: 14px;
+      article.priority-low {
+        --accent: var(--low-text);
       }
 
-      .header-row {
-        justify-content: space-between;
-        margin-bottom: 18px;
+      article.priority-medium {
+        --accent: var(--medium-text);
       }
 
-      .header-left {
-        display: flex;
-        align-items: center;
-        gap: 14px;
+      article.priority-high {
+        --accent: var(--high-text);
       }
 
-      .meta-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: flex-end;
+      article.is-overdue {
+        border-color: rgba(185, 28, 28, 0.32);
       }
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        font-size: 0.82rem;
-        font-weight: 700;
-        white-space: nowrap;
+      article.completed {
+        background: rgba(255, 251, 245, 0.78);
       }
 
-      .priority-badge.priority-high {
-        background: var(--hi-bg);
-        color: var(--hi-t);
-      }
-
-      .priority-badge.priority-medium {
-        background: var(--md-bg);
-        color: var(--md-t);
-      }
-
-      .priority-badge.priority-low {
-        background: var(--lo-bg);
-        color: var(--lo-t);
-      }
-
-      .status-badge.status-pending {
-        background: var(--pe-bg);
-        color: var(--pe-t);
-      }
-
-      .status-badge.status-progress {
-        background: var(--ip-bg);
-        color: var(--ip-t);
-      }
-
-      .status-badge.status-done {
-        background: var(--do-bg);
-        color: var(--do-t);
-      }
-
-      .main-row {
-        align-items: flex-start;
-      }
-
-      .checkbox-wrap {
-        flex: 0 0 auto;
+      .card-top,
+      .control-row,
+      .meta-row,
+      .button-row {
         display: flex;
         align-items: center;
         gap: 12px;
       }
 
-      .checkbox-wrap label {
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: var(--muted);
+      .card-top {
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .complete-wrap {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        gap: 10px;
       }
 
       input[type="checkbox"][data-testid="test-todo-complete-toggle"] {
         width: 22px;
         height: 22px;
         margin: 0;
-        accent-color: #15803d;
-        cursor: pointer;
+        accent-color: var(--done-text);
       }
 
-      .content {
+      .complete-wrap label,
+      .field label,
+      .status-control label {
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .meta-row {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+
+      .badge,
+      .overdue-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .priority-dot {
+        width: 13px;
+        height: 13px;
+        flex: 0 0 auto;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 16%, transparent);
+      }
+
+      .priority-low .priority-badge {
+        background: var(--low-bg);
+        color: var(--low-text);
+      }
+
+      .priority-medium .priority-badge {
+        background: var(--medium-bg);
+        color: var(--medium-text);
+      }
+
+      .priority-high .priority-badge {
+        background: var(--high-bg);
+        color: var(--high-text);
+      }
+
+      .status-pending {
+        background: var(--pending-bg);
+        color: var(--pending-text);
+      }
+
+      .status-progress {
+        background: var(--progress-bg);
+        color: var(--progress-text);
+      }
+
+      .status-done {
+        background: var(--done-bg);
+        color: var(--done-text);
+      }
+
+      .status-control {
+        display: grid;
+        gap: 6px;
+        margin: 0 0 18px;
+      }
+
+      select,
+      input,
+      textarea {
+        width: 100%;
         min-width: 0;
-        flex: 1;
+        border: 1px solid rgba(92, 109, 128, 0.28);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--ink);
+        padding: 11px 13px;
+        font: inherit;
+      }
+
+      select {
+        background: linear-gradient(145deg, #ffffff, #f3f4f6);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+
+      select:hover {
+        border-color: var(--focus);
+        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.12);
+      }
+
+      select:focus {
+        border-color: var(--focus);
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
       }
 
       h2[data-testid="test-todo-title"] {
         margin: 0;
         font-size: clamp(1.35rem, 4vw, 1.8rem);
         line-height: 1.15;
-        letter-spacing: -0.03em;
+        overflow-wrap: anywhere;
       }
 
       .completed h2[data-testid="test-todo-title"] {
+        color: var(--muted);
         text-decoration: line-through;
         text-decoration-thickness: 2px;
         text-decoration-color: rgba(31, 41, 55, 0.35);
       }
 
+      .collapsible-section {
+        overflow: hidden;
+        transition: max-height 0.2s ease;
+      }
+
+      .collapsible-section.is-collapsed {
+        max-height: 4.9rem;
+      }
+
+      .collapsible-section.is-expanded {
+        max-height: 40rem;
+      }
+
       p[data-testid="test-todo-description"] {
         margin: 12px 0 0;
-        font-size: 0.98rem;
-        line-height: 1.65;
         color: var(--muted);
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+      }
+
+      .expand-button {
+        margin-top: 10px;
+        min-width: 0;
+        padding-inline: 0;
+        border: 0;
+        background: transparent;
+        color: var(--focus);
       }
 
       .timeline {
@@ -229,230 +279,132 @@
         gap: 8px;
         margin-top: 18px;
         padding: 14px 15px;
+        border: 1px solid rgba(194, 65, 12, 0.16);
         border-radius: 18px;
         background: linear-gradient(180deg, #fff8ef, #f3ece4);
-        border: 1px solid rgba(194, 65, 12, 0.14);
       }
+
+      .timeline-label,
+      time[data-testid="test-todo-time-remaining"] {
+        color: #c2410c;
+        font-weight: 800;
+      }
+
+      .completed time[data-testid="test-todo-time-remaining"] {
+        color: var(--done-text);
+    }
 
       .timeline-label {
         margin: 0;
         font-size: 0.77rem;
-        font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: var(--red);
       }
 
       time[data-testid="test-todo-due-date"] {
-        font-weight: 700;
-        color: var(--text);
+        font-weight: 800;
       }
 
-      time[data-testid="test-todo-time-remaining"] {
-        color: var(--red);
-        font-weight: 700;
+      .overdue-badge {
+        width: fit-content;
+        background: var(--high-bg);
+        color: var(--high-text);
+      }
+
+      .overdue-badge[hidden] {
+        display: none;
       }
 
       ul[data-testid="test-todo-tags"] {
-        list-style: none;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        padding: 0;
         margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
       }
 
       ul[data-testid="test-todo-tags"] li {
         padding: 7px 12px;
         border-radius: 999px;
         background: var(--tag-bg);
-        color: var(--tag-t);
+        color: var(--tag-text);
         font-size: 0.84rem;
-        font-weight: 700;
+        font-weight: 800;
       }
 
-      .footer-row {
+      .button-row {
         justify-content: center;
+        flex-wrap: wrap;
         margin-top: 18px;
         padding-top: 18px;
         border-top: 1px solid rgba(92, 109, 128, 0.12);
-        flex-wrap: wrap;
-        gap: 16px;
-      }
-
-      button,
-      input,
-      textarea,
-      select {
-        font: inherit;
       }
 
       button {
-        appearance: none;
-        border: 1px solid var(--btn-b);
+        min-width: 122px;
+        border: 1px solid rgba(36, 48, 65, 0.14);
         border-radius: 14px;
-        background: var(--btn);
-        color: var(--btn-t);
+        background: #fff;
+        color: #243041;
         padding: 11px 16px;
-        font-weight: 700;
+        font: inherit;
+        font-weight: 800;
         cursor: pointer;
-        transition:
-          transform 0.14s ease,
-          background-color 0.14s ease,
-          border-color 0.14s ease,
-          opacity 0.14s ease;
-        min-width: 128px;
       }
 
       button:hover {
-        transform: translateY(-1px);
-        background: var(--btn-h);
-        border-color: rgba(36, 48, 65, 0.22);
+        background: #f6efe6;
       }
 
-      button:disabled {
-        cursor: not-allowed;
-        opacity: 0.55;
-        transform: none;
-      }
-      
-      .add-button,
-      .primary-button {
-        background: #0f766e;
-        color: #fff;
-        border-color: #0f766e;
-      }
-
-      .add-button:hover,
-      .primary-button:hover {
-        background: #115e59;
-        border-color: #115e59;
-      }
-
-      .delete-button,
-      .ghost-button.danger {
+      .danger-button {
         background: var(--danger-bg);
-        color: var(--danger-t);
+        color: var(--danger-text);
         border-color: rgba(180, 35, 24, 0.18);
       }
 
-      .delete-button:hover,
-      .ghost-button.danger:hover {
-        background: #ffe4df;
-        border-color: rgba(180, 35, 24, 0.28);
+      .add-task-btn {
+        min-width: 122px;
+        border-radius: 14px;
+        border: 1px solid rgba(30, 117, 239, 0.327);
+        background: var(--page-a);
+        color: #000000;
+        padding: 11px 16px;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+        
       }
 
-      .task-list-panel {
-        padding: 20px;
+      .add-task-btn:hover {
+        background: #f7fcfb;
+        color: var(--focus);
+        border: 1px solid rgba(30, 117, 239, 0.255);
       }
 
-      .list-title {
-        margin: 0 0 12px;
-        font-size: 1.02rem;
-        letter-spacing: -0.02em;
+      .save-button {
+        background: var(--focus);
+        color: #fff;
+        border-color: var(--focus);
       }
 
-      .list-copy {
-        margin: 0 0 18px;
-        color: var(--muted);
-        line-height: 1.6;
+      .edit-form {
+        display: none;
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.72);
       }
 
-      .task-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        gap: 10px;
-      }
-
-      .task-list button {
-        width: 100%;
-        text-align: left;
-        padding: 14px 16px;
-        border-radius: 18px;
-        background: var(--panel);
-      }
-
-      .task-list button.active {
-        border-color: rgba(15, 118, 110, 0.4);
-        background: rgba(217, 245, 236, 0.8);
-      }
-
-      .task-list strong,
-      .task-list span {
+      .edit-form.is-open {
         display: block;
       }
 
-      .task-list strong {
-        margin-bottom: 4px;
-      }
-
-      .task-list span {
-        color: var(--muted);
-        font-size: 0.88rem;
-      }
-
-      .empty-note {
-        margin: 0;
-        padding: 16px;
-        border-radius: 18px;
-        background: var(--red-soft);
-        color: #9a3412;
-        font-weight: 700;
-      }
-
-      .modal-shell {
-        position: fixed;
-        inset: 0;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 18px;
-        background: var(--overlay);
-        z-index: 10;
-      }
-
-      .modal-shell.is-open {
-        display: flex;
-      }
-
-      .modal-card {
-        width: min(100%, 520px);
-        max-height: min(92vh, 860px);
-        overflow: auto;
-        padding: 20px;
-      }
-
-      .modal-header {
-        display: flex;
-        align-items: start;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 18px;
-      }
-
-      .modal-title {
-        margin: 0;
-        font-size: 1.1rem;
-        letter-spacing: -0.02em;
-      }
-
-      .modal-copy {
-        margin: 6px 0 0;
-        color: var(--muted);
-        line-height: 1.55;
-      }
-
-      .close-button {
-        min-width: 44px;
-        padding-inline: 12px;
-      }
-
-      .editor-grid {
+      .edit-grid {
         display: grid;
-        gap: 14px;
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
       }
 
       .field {
@@ -465,122 +417,54 @@
         grid-column: 1 / -1;
       }
 
-      .field label {
-        font-size: 0.86rem;
-        font-weight: 700;
-        color: var(--muted);
-      }
-
-      .field input,
-      .field textarea,
-      .field select {
-        width: 100%;
-        min-width: 0;
-        border: 1px solid rgba(92, 109, 128, 0.24);
-        border-radius: 16px;
-        padding: 12px 14px;
-        background: rgba(255, 255, 255, 0.9);
-        color: var(--text);
-      }
-
-      .field textarea {
-        min-height: 110px;
+      textarea {
+        min-height: 120px;
         resize: vertical;
       }
 
       .form-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 18px;
-      }
-
-      .ghost-button {
-        background: transparent;
+        gap: 12px;
+        margin-top: 16px;
       }
 
       input:focus-visible,
       textarea:focus-visible,
       select:focus-visible,
-      input[type="checkbox"]:focus-visible,
       button:focus-visible {
-        outline: 2px solid var(--focus);
-        outline-offset: 2px;
+        outline: 3px solid var(--focus);
+        outline-offset: 3px;
       }
 
       @media (max-width: 640px) {
-        article[data-testid="test-todo-card"],
-        .task-list-panel,
-        .modal-card {
-          border-radius: 22px;
-        }
-
         article[data-testid="test-todo-card"] {
+          border-radius: 22px;
           padding: 20px 18px;
         }
 
-        .main-row,
-        .modal-header {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        .header-row {
-          flex-direction: row;
+        .card-top {
           align-items: flex-start;
-          justify-content: space-between;
         }
 
-        .header-left {
-          min-width: 0;
-          justify-content: flex-start;
-        }
-
-        .meta-group {
-          flex: 0 0 auto;
-          justify-content: flex-end;
-        }
-
-        .editor-grid {
+        .edit-grid {
           grid-template-columns: 1fr;
         }
 
-        .footer-row,
-        .form-actions {
-          gap: 12px;
-        }
-
-        .footer-row button,
+        .button-row button,
         .form-actions button {
           flex: 1 1 100%;
           min-width: 0;
         }
       }
 
-      @media (max-width: 360px) {
-        .page-shell {
-          padding-inline: 12px;
-        }
-
-        .modal-shell {
-          padding: 12px;
-        }
-
-        article[data-testid="test-todo-card"],
-        .task-list-panel,
-        .modal-card {
-          padding-inline: 16px;
-        }
-      }
-
       @media (max-width: 340px) {
-        .header-row {
+        .card-top {
           flex-direction: column;
-          align-items: stretch;
           gap: 12px;
         }
 
-        .meta-group {
+        .meta-row {
           justify-content: flex-start;
         }
       }
@@ -588,553 +472,385 @@
   </head>
   <body>
     <main class="page-shell">
-      <div class="stack">
-        <section>
-          <p class="eyebrow">
-            Today's Priority
-          </p>
-          <article data-testid="test-todo-card" id="todoCard" aria-labelledby="todoTitle">
-            <div class="header-row">
-              <div class="header-left">
-                <div class="checkbox-wrap">
-                  <input type="checkbox" id="todoComplete" data-testid="test-todo-complete-toggle">
-                  <label for="todoComplete">
-                    Mark as done
-                  </label>
-                </div>
-              </div>
-              <div class="meta-group" aria-label="Task metadata">
-                <span class="badge priority-badge priority-high" data-testid="test-todo-priority" id="todoPriority" aria-label="Task priority">
-                  High
-                </span>
-                <span class="badge status-badge status-progress" data-testid="test-todo-status" id="todoStatus">
-                  In Progress
-                </span>
-              </div>
-            </div>
-            <div class="main-row">
-              <div class="content">
-                <h2 data-testid="test-todo-title" id="todoTitle">
-                  Daniel J Task Card 
-                </h2>
-                <p data-testid="test-todo-description" id="todoDescription">
-                  Refine the todo card with accessible controls, responsive spacing, 
-                  clear status cues, and a live due-date hint that stays helpful at a glance.
-                </p>
-                <section class="timeline" aria-label="Deadline information">
-                  <p class="timeline-label">
-                    Deadline
-                  </p>
-                  <time data-testid="test-todo-due-date" id="todoDueDate" datetime="">
-                    Loading due date...
-                  </time>
-                  <time data-testid="test-todo-time-remaining" id="todoTimeRemaining" datetime="" aria-live="polite">
-                    Calculating...
-                  </time>
-                </section>
-                <ul data-testid="test-todo-tags" id="todoTags" role="list" aria-label="Task tags">
-                  <li data-testid="test-todo-tag-work">Work</li>
-                  <li data-testid="test-todo-tag-urgent">Urgent</li>
-                  <li data-testid="test-todo-tag-design">Design</li>
-                </ul>
-                <div class="footer-row">
-                  <button type="button" class="add-button" id="addTaskButton" aria-label="Add task">
-                    Add Task
-                  </button>
-                  <button type="button" data-testid="test-todo-edit-button" id="editTaskButton" aria-label="Edit task">
-                    Edit
-                  </button>
-                  <button type="button" class="delete-button" data-testid="test-todo-delete-button" id="deleteTaskButton" aria-label="Delete task">
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </article>
-        </section>
-        <section class="task-list-panel" aria-labelledby="taskListTitle">
-          <h2 class="list-title" id="taskListTitle">
-            Task list
-          </h2>
-          <p class="list-copy">
-            New tasks are added to this list and stay alongside the existing ones. Select any task to load it into the main card.
-          </p>
-          <ul class="task-list" id="taskList">
-          </ul>
-        </section>
-      </div>
-    </main>
-    <div class="modal-shell" id="taskModal" aria-hidden="true">
-      <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="editorTitle" aria-describedby="editorCopy">
-        <div class="modal-header">
-          <div>
-            <h2 class="modal-title" id="editorTitle">
-              Task editor
-            </h2>
-            <p class="modal-copy" id="editorCopy">
-              Create a new task or update the selected.
-            </p>
+      <article
+        data-testid="test-todo-card"
+        id="todoCard"
+        class="priority-high"
+        aria-labelledby="todoTitle"
+      >
+        <div class="card-top">
+          <div class="complete-wrap">
+            <input type="checkbox" id="todoComplete" data-testid="test-todo-complete-toggle" />
+            <label for="todoComplete">Mark as done</label>
           </div>
-          <button type="button" class="close-button ghost-button" id="closeModalButton" aria-label="Close task editor">
-            Close
-          </button>
+
+          <div class="meta-row" aria-label="Task metadata">
+            <span
+              class="priority-dot"
+              data-testid="test-todo-priority-indicator"
+              id="priorityIndicator"
+              aria-hidden="true"
+            ></span>
+            <span class="badge priority-badge" data-testid="test-todo-priority" id="todoPriority">High</span>
+            <span class="badge status-progress" data-testid="test-todo-status" id="todoStatus">In Progress</span>
+          </div>
         </div>
-        <form id="taskForm" novalidate>
-          <div class="editor-grid">
+
+        <div class="status-control">
+          <label for="todoStatusControl">Status</label>
+          <select id="todoStatusControl" data-testid="test-todo-status-control" aria-label="Change task status">
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
+          </select>
+        </div>
+
+        <h2 data-testid="test-todo-title" id="todoTitle">Daniel J Task Card</h2>
+
+        <section
+          class="collapsible-section"
+          data-testid="test-todo-collapsible-section"
+          id="todoCollapsibleSection"
+        >
+          <p data-testid="test-todo-description" id="todoDescription"></p>
+        </section>
+
+        <button
+          type="button"
+          class="expand-button"
+          data-testid="test-todo-expand-toggle"
+          id="expandToggle"
+          aria-expanded="false"
+          aria-controls="todoCollapsibleSection"
+        >
+          Show more
+        </button>
+
+        <section class="timeline" aria-label="Deadline information">
+          <p class="timeline-label">Deadline</p>
+          <time data-testid="test-todo-due-date" id="todoDueDate" datetime=""></time>
+          <time
+            data-testid="test-todo-time-remaining"
+            id="todoTimeRemaining"
+            datetime=""
+            aria-live="polite"
+          ></time>
+          <span class="overdue-badge" data-testid="test-todo-overdue-indicator" id="overdueIndicator" hidden>
+            Overdue
+          </span>
+        </section>
+
+        <ul data-testid="test-todo-tags" id="todoTags" role="list" aria-label="Task tags">
+          <li data-testid="test-todo-tag-work">Work</li>
+          <li data-testid="test-todo-tag-urgent">Urgent</li>
+          <li>Design</li>
+        </ul>
+
+        <div class="button-row">
+          <button type="button" data-testid="test-todo-addTask-button" id="addTaskButton" class="add-task-btn">Add Task</button>
+          <button type="button" data-testid="test-todo-edit-button" id="editButton">Edit</button>
+          <button type="button" data-testid="test-todo-delete-button" id="deleteButton" class="danger-button">Delete</button>
+        </div>
+
+        <form
+          class="edit-form"
+          data-testid="test-todo-edit-form"
+          id="editForm"
+          aria-label="Edit todo task"
+          aria-hidden="true"
+        >
+          <div class="edit-grid">
             <div class="field full">
-              <label for="taskTitleInput">
-                Task title
-              </label>
-              <input type="text" id="taskTitleInput" name="title" maxlength="80" required>
+              <label for="editTitle">Title</label>
+              <input id="editTitle" data-testid="test-todo-edit-title-input" type="text" required />
             </div>
+
             <div class="field full">
-              <label for="taskDescriptionInput">
-                Description
-              </label>
-              <textarea id="taskDescriptionInput" name="description" maxlength="240" required>
-              </textarea>
+              <label for="editDescription">Description</label>
+              <textarea id="editDescription" data-testid="test-todo-edit-description-input" required></textarea>
             </div>
+
             <div class="field">
-              <label for="taskPriorityInput">
-                Priority
-              </label>
-              <select id="taskPriorityInput" name="priority">
-                <option value="Low">
-                  Low
-                </option>
-                <option value="Medium">
-                  Medium
-                </option>
-                <option value="High">
-                  High
-                </option>
+              <label for="editPriority">Priority</label>
+              <select id="editPriority" data-testid="test-todo-edit-priority-select">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
               </select>
             </div>
+
             <div class="field">
-              <label for="taskStatusInput">
-                Status
-              </label>
-              <select id="taskStatusInput" name="status">
-                <option value="Pending">
-                  Pending
-                </option>
-                <option value="In Progress">
-                  In Progress
-                </option>
-                <option value="Done">
-                  Done
-                </option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="taskDueInput">
-                Due date and time
-              </label>
-              <input type="datetime-local" id="taskDueInput" name="dueDate" required>
-            </div>
-            <div class="field">
-              <label for="taskTagsInput">
-                Tags
-              </label>
-              <input type="text" id="taskTagsInput" name="tags" placeholder="work, urgent, design">
+              <label for="editDueDate">Due date</label>
+              <input id="editDueDate" data-testid="test-todo-edit-due-date-input" type="datetime-local" required />
             </div>
           </div>
+
           <div class="form-actions">
-            <button type="submit" class="primary-button" id="submitTaskButton">
-              Add task
-            </button>
-            <button type="button" class="ghost-button" id="cancelEditButton">
-              Cancel
-            </button>
-            <button type="button" class="ghost-button danger" id="resetStorageButton">
-              Clear all tasks
-            </button>
+            <button type="submit" class="save-button" data-testid="test-todo-save-button" id="saveButton">Save</button>
+            <button type="button" data-testid="test-todo-cancel-button" id="cancelButton">Cancel</button>
           </div>
         </form>
-      </section>
-    </div>
-    <script>
-const STORAGE_KEY="todo-task-card-items";
-const defaultTask={
-  id:"task-default",
-  title:"Daniel J Task Card",
-  description:"Refine the todo card with accessible controls, responsive spacing, clear status cues, and a live due-date hint that stays helpful at a glance.",
-  priority:"High",
-  status:"In Progress",
-  dueDate:new Date(Date.now()+((2*24+6)*60*60*1000)).toISOString(),
-  tags:["Work", "Urgent", "Design"]
-};
-const state={
-  tasks:loadTasks(),
-  selectedTaskId:null,
-  editingTaskId:null
-};
-const card=document.getElementById("todoCard"),
-titleElement=document.getElementById("todoTitle"),
-descriptionElement=document.getElementById("todoDescription"),
-priorityElement=document.getElementById("todoPriority"),
-statusElement=document.getElementById("todoStatus"),
-dueDateElement=document.getElementById("todoDueDate"),
-timeRemainingElement=document.getElementById("todoTimeRemaining"),
-toggleElement=document.getElementById("todoComplete"),
-tagsElement=document.getElementById("todoTags"),
-addTaskButton=document.getElementById("addTaskButton"),
-editTaskButton=document.getElementById("editTaskButton"),
-deleteTaskButton=document.getElementById("deleteTaskButton"),
-taskListElement=document.getElementById("taskList"),
-modalElement=document.getElementById("taskModal"),
-closeModalButton=document.getElementById("closeModalButton"),
-taskForm=document.getElementById("taskForm"),
-titleInput=document.getElementById("taskTitleInput"),
-descriptionInput=document.getElementById("taskDescriptionInput"),
-priorityInput=document.getElementById("taskPriorityInput"),
-statusInput=document.getElementById("taskStatusInput"),
-dueInput=document.getElementById("taskDueInput"),
-tagsInput=document.getElementById("taskTagsInput"),
-submitTaskButton=document.getElementById("submitTaskButton"),
-cancelEditButton=document.getElementById("cancelEditButton"),
-resetStorageButton=document.getElementById("resetStorageButton");
-if(state.tasks.length===0) {
-  state.tasks=[defaultTask];
-  persistTasks()
-}
-state.selectedTaskId=state.tasks[0].id;
-function loadTasks() {
-  try {
-    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
-    
-    return Array.isArray(saved)&&saved.length?saved:[]
-  }
-  catch(error) {
-    
-    return[]
-  }
-}
-function persistTasks() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.tasks))
-}
-function getSelectedTask() {
-  
-  return state.tasks.find(function(task) {
-    
-    return task.id===state.selectedTaskId
-  })||null
-}
-function formatDueDate(date) {
-  
-  return new Intl.DateTimeFormat("en-US", {
-    
-    month:"short", day:"numeric", year:"numeric"
-  }).format(date)
-}
-function formatDueDateTimeForInput(isoString) {
-  
-  const date=new Date(isoString), offset=date.getTimezoneOffset(), localDate=new Date(date.getTime()-offset*60000);
-  
-  return localDate.toISOString().slice(0, 16)
-}
-function pluralize(value, unit) {
-  
-  return value===1?unit:unit+"s"
-}
-function getTimeRemainingLabel(now, dueDate) {
-  
-  const diff=dueDate.getTime()-now.getTime(), minute=60000, hour=60*minute, day=24*hour;
-  
-  if(Math.abs(diff)<minute)
-  return"Due now!";
-  
-  if(diff>0) {
-    const days=Math.round(diff/day);
-    
-    if(days===1&&diff<36*hour)return"Due tomorrow";
-    
-    if(diff>=day)
-    return"Due in "+days+" "+pluralize(days, "day");
-    
-    const hours=Math.max(1, Math.round(diff/hour));
-    
-    return"Due in "+hours+" "+pluralize(hours, "hour")
-  }
-  const overdue=Math.abs(diff);
-  if(overdue>=day) {
-    
-    const daysOverdue=Math.round(overdue/day);
-    
-    return"Overdue by "+daysOverdue+" "+pluralize(daysOverdue, "day")
-  }
-  const hoursOverdue=Math.max(1, Math.round(overdue/hour));
-  
-  return"Overdue by "+hoursOverdue+" "+pluralize(hoursOverdue, "hour")
-}
-function getStatusClass(status) {
-  
-  if(status==="Done")
-  return"status-done";
-  
-  if(status==="In Progress")
-  return"status-progress";
-  
-  return"status-pending"
-}
-function getPriorityClass(priority) {
-  
-  if(priority==="High")
-  return"priority-high";
-  
-  if(priority==="Medium")
-  return"priority-medium";
-  
-  return"priority-low"
-}
-function parseTags(rawValue) {
-  
-  return rawValue.split(",").map(
-  function(tag) {
-    
-    return tag.trim()
-  }).filter(Boolean)
-}
-function renderTags(tags) {
-  
-  const safeTags=tags.length?tags:["General"];
-  tagsElement.innerHTML="";
-  safeTags.forEach(
-  function(tag) {
-    
-    const item=document.createElement("li");
-    item.textContent=tag;
-    
-    if(tag.toLowerCase()==="work")item.setAttribute("data-testid", "test-todo-tag-work");
-    
-    if(tag.toLowerCase()==="urgent")item.setAttribute("data-testid", "test-todo-tag-urgent");
-    tagsElement.appendChild(item)
-  })
-}
-function openModal(mode) {
-  modalElement.classList.add("is-open")
-  
-  modalElement.setAttribute("aria-hidden", "false")
-  
-  submitTaskButton.textContent=mode==="edit"?"Save changes":"Add task"
-  window.setTimeout(
-  function() {
-    titleInput.focus()
-  }, 0)
-}
-function closeModal() {
-  modalElement.classList.remove("is-open")
-  
-  modalElement.setAttribute("aria-hidden", "true")
-  state.editingTaskId=null
-  clearForm()
-}
-function renderCard() {
-  
-  const task=getSelectedTask()
-  if(!task) {
-    titleElement.textContent="No tasks yet"
-    
-    descriptionElement.textContent="Use Add Task to create your first task."
-    
-    priorityElement.textContent="Low"
-    
-    priorityElement.className="badge priority-badge priority-low"
-    
-    statusElement.textContent="Pending"
-    
-    statusElement.className="badge status-badge status-pending"
-    
-    dueDateElement.textContent="Due date not set"
-    
-    dueDateElement.dateTime=""
-    
-    timeRemainingElement.textContent="Add a due date to get started"
-    
-    timeRemainingElement.dateTime=""
-    
-    toggleElement.checked=false
-    
-    toggleElement.disabled=true
-    
-    card.classList.remove("completed")
-    
-    editTaskButton.disabled=true
-    
-    deleteTaskButton.disabled=true
-    renderTags(["General"])
+      </article>
+    </main>
 
-    return
-  }
-  const
-  dueDate=new Date(task.dueDate), isDone=task.status==="Done"
-  
-  titleElement.textContent=task.title
-  
-  descriptionElement.textContent=task.description
-  
-  priorityElement.textContent=task.priority
-  
-  priorityElement.className="badge priority-badge "+getPriorityClass(task.priority)
-  
-  priorityElement.setAttribute("aria-label",
-  task.priority+" priority")
-  
-  statusElement.textContent=task.status
-  
-  statusElement.className="badge status-badge "+getStatusClass(task.status)
-  
-  dueDateElement.textContent="Due "+formatDueDate(dueDate)
-  
-  dueDateElement.dateTime=dueDate.toISOString()
-  
-  timeRemainingElement.textContent=getTimeRemainingLabel(new Date(), dueDate)
-  
-  timeRemainingElement.dateTime=dueDate.toISOString()
-  
-  toggleElement.checked=isDone
-  
-  toggleElement.disabled=false
-  
-  card.classList.toggle("completed", isDone)
-  
-  editTaskButton.disabled=false
-  
-  deleteTaskButton.disabled=false
-  renderTags(task.tags)
-}
-function renderTaskList() {
-  taskListElement.innerHTML=""
-  
-  if(state.tasks.length===0) {
-    const note=document.createElement("li")
-    
-    note.className="empty-note"
-    note.textContent="No tasks saved yet."
-    
-    taskListElement.appendChild(note)
-    
-    return
-  }
-  state.tasks.forEach(function(task) {
-    const item=document.createElement("li"),
-    button=document.createElement("button"), title=document.createElement("strong"),
-    meta=document.createElement("span")
-    button.type="button"
-    
-    button.className=task.id===state.selectedTaskId?"active":""
-    button.addEventListener("click", function() {
-      state.selectedTaskId=task.id
-      renderAll()
-    })
-    title.textContent=task.title
-    meta.textContent=task.status+" • "+task.priority;
-    button.appendChild(title);
-    button.appendChild(meta);
-    item.appendChild(button);
-    taskListElement.appendChild(item)
-  })
-}
-function renderAll() {
-  renderCard();
-  renderTaskList()
-}
-function clearForm() {
-  taskForm.reset();
-  dueInput.value=formatDueDateTimeForInput(new Date(Date.now()+24*60*60*1000).toISOString());
-  statusInput.value="Pending";
-  priorityInput.value="Medium";
-  submitTaskButton.textContent="Add task"
-}
-function fillForm(task) {
-  titleInput.value=task.title;
-  descriptionInput.value=task.description;
-  priorityInput.value=task.priority;
-  statusInput.value=task.status;
-  dueInput.value=formatDueDateTimeForInput(task.dueDate);
-  tagsInput.value=task.tags.join(", ");
-  submitTaskButton.textContent="Save changes"
-}
-taskForm.addEventListener("submit", function(event) {
-  event.preventDefault();
-  if(!titleInput.value.trim()||!descriptionInput.value.trim()||!dueInput.value) {
-    taskForm.reportValidity();
-    return
-  }
-  const payload={
-    title:titleInput.value.trim(), description:descriptionInput.value.trim(), priority:priorityInput.value, status:statusInput.value, dueDate:new Date(dueInput.value).toISOString(), tags:parseTags(tagsInput.value)
-  };
-  if(state.editingTaskId) {
-    state.tasks=state.tasks.map(function(task) {
-      if(task.id===state.editingTaskId)return {
-        id:task.id, title:payload.title, description:payload.description, priority:payload.priority, status:payload.status, dueDate:payload.dueDate, tags:payload.tags
+    <script>
+      const DESCRIPTION_LIMIT = 150;
+
+      const task = {
+        title: "Daniel J Task Card",
+        description:
+          "Refine the todo card with accessible controls, responsive spacing, clear status cues, editable content, synchronized status controls, and a live due-date hint that stays helpful even when the task description becomes very long on smaller screens.",
+        priority: "High",
+        status: "In Progress",
+        dueDate: new Date(Date.now() + (2 * 24 + 3) * 60 * 60 * 1000).toISOString(),
+        tags: ["Work", "Urgent", "Design"]
       };
-      return task
-    });
-    state.selectedTaskId=state.editingTaskId
-  }
-  else {
-    const newTask={
-      id:"task-"+Date.now(), title:payload.title, description:payload.description, priority:payload.priority, status:payload.status, dueDate:payload.dueDate, tags:payload.tags
-    };
-    state.tasks.unshift(newTask);
-    state.selectedTaskId=newTask.id
-  }
-  persistTasks();
-  renderAll();
-  closeModal()
-});
-addTaskButton.addEventListener("click", function() {
-  state.editingTaskId=null;
-  clearForm();
-  openModal("add")
-});
-editTaskButton.addEventListener("click", function() {
-  const task=getSelectedTask();
-  if(!task)return;
-  state.editingTaskId=task.id;
-  fillForm(task);
-  openModal("edit")
-});
-deleteTaskButton.addEventListener("click", function() {
-  const task=getSelectedTask();
-  if(!task)return;
-  const confirmed=window.confirm('Delete "'+task.title+'"?');
-  if(!confirmed)return;
-  state.tasks=state.tasks.filter(function(item) {
-    return item.id!==task.id
-  });
-  state.selectedTaskId=state.tasks.length?state.tasks[0].id:null;
-  persistTasks();
-  renderAll()
-});
-toggleElement.addEventListener("change", function() {
-  const task=getSelectedTask();
-  if(!task)return;
-  task.status=toggleElement.checked?"Done":"In Progress";
-  persistTasks();
-  renderAll()
-});
-cancelEditButton.addEventListener("click", closeModal);
-closeModalButton.addEventListener("click", closeModal);
-modalElement.addEventListener("click", function(event) {
-  if(event.target===modalElement)closeModal()
-});
-resetStorageButton.addEventListener("click", function() {
-  const confirmed=window.confirm("Clear every saved task?");
-  if(!confirmed)return;
-  state.tasks=[];
-  state.selectedTaskId=null;
-  persistTasks();
-  renderAll();
-  closeModal()
-});
-document.addEventListener("keydown", function(event) {
-  if(event.key==="Escape"&&modalElement.classList.contains("is-open"))closeModal()
-});
-renderAll();
-clearForm();
-window.setInterval(renderCard, 30000);
-</script>
+
+      let isExpanded = task.description.length <= DESCRIPTION_LIMIT;
+      let editSnapshot = null;
+
+      const card = document.getElementById("todoCard");
+      const completeToggle = document.getElementById("todoComplete");
+      const statusControl = document.getElementById("todoStatusControl");
+      const priorityIndicator = document.getElementById("priorityIndicator");
+      const priorityLabel = document.getElementById("todoPriority");
+      const statusLabel = document.getElementById("todoStatus");
+      const title = document.getElementById("todoTitle");
+      const description = document.getElementById("todoDescription");
+      const collapsibleSection = document.getElementById("todoCollapsibleSection");
+      const expandToggle = document.getElementById("expandToggle");
+      const dueDate = document.getElementById("todoDueDate");
+      const timeRemaining = document.getElementById("todoTimeRemaining");
+      const overdueIndicator = document.getElementById("overdueIndicator");
+      const editButton = document.getElementById("editButton");
+      const deleteButton = document.getElementById("deleteButton");
+      const editForm = document.getElementById("editForm");
+      const editTitle = document.getElementById("editTitle");
+      const editDescription = document.getElementById("editDescription");
+      const editPriority = document.getElementById("editPriority");
+      const editDueDate = document.getElementById("editDueDate");
+      const saveButton = document.getElementById("saveButton");
+      const cancelButton = document.getElementById("cancelButton");
+
+      function formatDate(date) {
+        return new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        }).format(date);
+      }
+
+      function formatForInput(isoDate) {
+        const date = new Date(isoDate);
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return localDate.toISOString().slice(0, 16);
+      }
+
+      function plural(value, unit) {
+        return value === 1 ? unit : unit + "s";
+      }
+
+      function getRelativeTime(now, target) {
+        if (task.status === "Done") {
+          return "Completed";
+        }
+
+        const diff = target.getTime() - now.getTime();
+        const abs = Math.abs(diff);
+        const minute = 60 * 1000;
+        const hour = 60 * minute;
+        const day = 24 * hour;
+        const prefix = diff < 0 ? "Overdue by " : "Due in ";
+
+        if (abs < minute) {
+          return diff < 0 ? "Overdue by 1 minute" : "Due now!";
+        }
+
+        if (abs >= day) {
+          const days = Math.floor(abs / day);
+          return prefix + days + " " + plural(days, "day");
+        }
+
+        if (abs >= hour) {
+          const hours = Math.floor(abs / hour);
+          return prefix + hours + " " + plural(hours, "hour");
+        }
+
+        const minutes = Math.max(1, Math.floor(abs / minute));
+        return prefix + minutes + " " + plural(minutes, "minute");
+      }
+
+      function getStatusClass(status) {
+        if (status === "Done") return "status-done";
+        if (status === "In Progress") return "status-progress";
+        return "status-pending";
+      }
+
+      function syncStatus(status) {
+        task.status = status;
+        completeToggle.checked = status === "Done";
+        render();
+      }
+
+      function renderCollapse() {
+        const shouldCollapse = task.description.length > DESCRIPTION_LIMIT;
+        const expanded = isExpanded || !shouldCollapse;
+
+        collapsibleSection.classList.toggle("is-collapsed", !expanded);
+        collapsibleSection.classList.toggle("is-expanded", expanded);
+        expandToggle.hidden = !shouldCollapse;
+        expandToggle.textContent = expanded ? "Show less" : "Show more";
+        expandToggle.setAttribute("aria-expanded", String(expanded));
+      }
+
+      function renderTime() {
+        const target = new Date(task.dueDate);
+        const isDone = task.status === "Done";
+        const isOverdue = !isDone && target.getTime() < Date.now();
+
+        dueDate.textContent = "Due " + formatDate(target);
+        dueDate.dateTime = target.toISOString();
+        timeRemaining.textContent = getRelativeTime(new Date(), target);
+        timeRemaining.dateTime = target.toISOString();
+        overdueIndicator.hidden = !isOverdue;
+        card.classList.toggle("is-overdue", isOverdue);
+      }
+
+      function render() {
+        title.textContent = task.title;
+        description.textContent = task.description;
+        priorityLabel.textContent = task.priority;
+        statusLabel.textContent = task.status;
+        statusControl.value = task.status;
+        priorityIndicator.setAttribute("aria-label", task.priority + " priority indicator");
+
+        card.classList.remove("priority-low", "priority-medium", "priority-high", "completed");
+        card.classList.add("priority-" + task.priority.toLowerCase());
+        card.classList.toggle("completed", task.status === "Done");
+
+        statusLabel.className = "badge " + getStatusClass(task.status);
+        completeToggle.checked = task.status === "Done";
+
+        renderCollapse();
+        renderTime();
+      }
+
+      function openEditMode() {
+        editSnapshot = { ...task };
+        editTitle.value = task.title;
+        editDescription.value = task.description;
+        editPriority.value = task.priority;
+        editDueDate.value = formatForInput(task.dueDate);
+        editForm.classList.add("is-open");
+        editForm.setAttribute("aria-hidden", "false");
+        editTitle.focus();
+      }
+
+      function closeEditMode(restore) {
+        if (restore && editSnapshot) {
+          Object.assign(task, editSnapshot);
+          render();
+        }
+
+        editSnapshot = null;
+        editForm.classList.remove("is-open");
+        editForm.setAttribute("aria-hidden", "true");
+        editButton.focus();
+      }
+
+      function saveEdit(event) {
+        event.preventDefault();
+
+        if (!editTitle.value.trim() || !editDescription.value.trim() || !editDueDate.value) {
+          editForm.reportValidity();
+          return;
+        }
+
+        task.title = editTitle.value.trim();
+        task.description = editDescription.value.trim();
+        task.priority = editPriority.value;
+        task.dueDate = new Date(editDueDate.value).toISOString();
+        isExpanded = task.description.length <= DESCRIPTION_LIMIT;
+        render();
+        closeEditMode(false);
+      }
+
+      function trapFormFocus(event) {
+        if (!editForm.classList.contains("is-open")) return;
+
+        if (event.key === "Escape") {
+          closeEditMode(true);
+          return;
+        }
+
+        if (event.key !== "Tab") return;
+
+        const focusable = Array.from(
+          editForm.querySelectorAll("input, textarea, select, button")
+        ).filter((element) => !element.disabled && !element.hidden);
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+
+      completeToggle.addEventListener("change", () => {
+        syncStatus(completeToggle.checked ? "Done" : "Pending");
+      });
+
+      statusControl.addEventListener("change", () => {
+        syncStatus(statusControl.value);
+      });
+
+      expandToggle.addEventListener("click", () => {
+        isExpanded = !isExpanded;
+        renderCollapse();
+      });
+
+      editButton.addEventListener("click", openEditMode);
+      deleteButton.addEventListener("click", () => {
+        if (!window.confirm("Delete this task?")) return;
+        task.title = "No task selected";
+        task.description = "Use Edit to add new task details.";
+        task.priority = "Low";
+        task.status = "Pending";
+        task.dueDate = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+        isExpanded = true;
+        render();
+      });
+
+      editForm.addEventListener("submit", saveEdit);
+      cancelButton.addEventListener("click", () => closeEditMode(true));
+      document.addEventListener("keydown", trapFormFocus);
+
+      render();
+      window.setInterval(() => {
+        if (task.status !== "Done") renderTime();
+      }, 30000);
+
+      const addTaskButton = document.getElementById("addTaskButton");
+
+      addTaskButton.addEventListener("click", () => {
+        card.classList.remove("hidden");
+
+        // Reset task (fresh form)
+        task.title = "New Task";
+        task.description = "";
+        task.priority = "Low";
+        task.status = "Pending";
+        task.dueDate = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+
+        render();
+        openEditMode(); // auto open form
+      });
+     
+    </script>
   </body>
 </html>
